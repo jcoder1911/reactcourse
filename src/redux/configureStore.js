@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { createStore, combineReducers } from 'redux';
 import { Campsites } from './campsites';
 import { Comments } from './comments';
