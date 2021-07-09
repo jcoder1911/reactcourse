@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { isUserWhitespacable } from 'jest-snapshot/node_modules/@babel/types';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const required = val => val && val.length;
 const maxLength = len => val => !val || (val.length <= len);
@@ -73,7 +74,7 @@ class CommentForm extends Component {
                             </div>
                             <div className="form-group">
                                 <Label htmlFor="feedback" >Feedback</Label>
-                                <Control.textarea model=".textarea" name="textarea" id="textarea" rows="6" className="form-control" placeholder="Feedback"/>
+                                <Control.textarea model=".textarea" name="textarea" rows="6" className="form-control" placeholder="Feedback"/>
                             </div>
                             <Button type="submit" value="submit" color="primary" onClick={this.toggleModal}>Submit</Button>
                         </LocalForm>
@@ -88,12 +89,18 @@ class CommentForm extends Component {
 function RenderCampsite({campsite}) {
     return(
         <div className="col-md-5 m-1">
-            <Card>
-                <CardImg top src={baseUrl + campsite.image} alt={campsite.name} />
-                <CardBody>
-                    <CardText>{campsite.description}</CardText>
-                </CardBody>
-            </Card>
+            <FadeTransform
+                in
+                transformProps={{
+                    exitTransform: 'scale(0.5) translateY(-50%)'
+                }}>
+                <Card>
+                    <CardImg top src={baseUrl + campsite.image} alt={campsite.name} />
+                    <CardBody>
+                        <CardText>{campsite.description}</CardText>
+                    </CardBody>
+                </Card>
+            </FadeTransform>
         </div>
     )
 
@@ -104,12 +111,22 @@ function RenderCampsite({campsite}) {
         return (
             <div className="col-md-5 m-1">
                 <h4>Comments</h4>
-                {comments.map(comment => (
-                    <p key={comment.id}>
-                        {comment.text} <br />
-                        {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}
-                    </p>
-                ))}
+                <Stagger in>
+                    {
+                        comments.map(comment => {
+                            return (
+                                <Fade in key={comment.id}>
+                                    <div>
+                                        <p>
+                                            {comment.text}<br />
+                                            -- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}
+                                        </p>
+                                    </div>
+                                </Fade>
+                            );
+                        })
+                    }
+                </Stagger>
                 <CommentForm campsiteId={campsiteId} postComment={postComment} />
             </div>
         )
