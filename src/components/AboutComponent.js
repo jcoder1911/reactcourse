@@ -2,12 +2,19 @@ import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Stagger } from 'react-animation-components';
 import { Link } from 'react-router-dom';
 
 function RenderPartner({partner}) {
     if(partner) {
         return (
             <React.Fragment>
+                <Stagger in>
+                <FadeTransform
+            in
+            transformProps={{
+                exitTransform: 'scale(0.5) translateY(50%)'
+            }}>
                 <Media object src={baseUrl + partner.image} alt={partner.name} width="150" />
                 <Media body className="ml-5 mb-4">
                     <Media heading>
@@ -15,6 +22,8 @@ function RenderPartner({partner}) {
                     </Media>
                     {partner.description}
                 </Media>
+                </FadeTransform>
+                </Stagger>
             </React.Fragment>
         )
     }
@@ -22,11 +31,17 @@ function RenderPartner({partner}) {
 }
 
 function PartnerList(props) {
-const partners = props.partners.map(partner => {
+const partners = props.partners.partners.map(partner => {
         return (
-            <Media key = {partner.id} tag="li">
-                <RenderPartner partner={partner} />
-            </Media>
+            <FadeTransform
+            in
+            transformProps={{
+                exitTransform: 'scale(0.5) translateY(50%)'
+            }} key = {partner.id}>
+                <Media  tag="li">
+                    <RenderPartner partner={partner} />
+                </Media>
+            </FadeTransform>
         );
     });
     if (props.partners.isLoading) {
@@ -49,11 +64,21 @@ const partners = props.partners.map(partner => {
             </div>
         );
     }
+    return (
     <div className="col mt-4">
-        <Media list>
-            {partners}
-        </Media>
+        <FadeTransform
+            in
+            transformProps={{
+                exitTransform: 'scale(0.5) translateY(50%)'
+            }}>
+            <Stagger in>
+                <Media list>
+                    {partners}
+                </Media>
+            </Stagger>
+        </FadeTransform>
     </div>
+    );
 }
 
 function About(props) {
