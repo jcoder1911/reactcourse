@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
 import { Control, LocalForm, Errors} from 'react-redux-form';
 import { Link } from 'react-router-dom';
-import { isUserWhitespacable } from 'jest-snapshot/node_modules/@babel/types';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
@@ -74,9 +73,9 @@ class CommentForm extends Component {
                             </div>
                             <div className="form-group">
                                 <Label htmlFor="feedback" >Feedback</Label>
-                                <Control.textarea model=".textarea" name="textarea" rows="6" className="form-control" placeholder="Feedback"/>
+                                <Control.textarea model=".text" name="text" id="text" rows="6" className="form-control" placeholder="Feedback"/>
                             </div>
-                            <Button type="submit" value="submit" color="primary" onClick={this.toggleModal}>Submit</Button>
+                            <Button type="submit" value="submit" color="primary" >Submit</Button>
                         </LocalForm>
                     </ModalBody>
                 </Modal>
